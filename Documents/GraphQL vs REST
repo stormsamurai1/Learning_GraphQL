@@ -1,0 +1,124 @@
+|-> GraphQL, o que é?
+    
+    -> Nada mais é do que uma forma diferente de entender requisições. GraphQL não substitui Frontend
+       nem Backend, isso não é o fogo desta tecnologia como alguns dizem.
+
+|-> GraphQL Vs REST
+
+    -> REST
+        
+        - Na "arquitetura" REST para cada função que desejamos executar criamos uma rota, endpoints,
+          para que possamos acessar cada função estabelecida pelos controladores(helpers e outros)
+          de forma isolada, utilizando os verbos GET, POST, PUT e DELETE
+    
+        - Formato:
+            /* Retorna todos os usuarios */
+            GET /users
+
+            /* Cria um novo usuario */ 
+            POST /users
+
+            /* Altera um usuario pelo ID */
+            PUT /users/:id
+
+            /* Deleta um usuario pelo ID */
+            DELETE /users/:id
+    
+    -> GraphQL
+
+        - Necessita de apenas uma rota, geralmente um post com nome "graphql"
+            Ex:
+
+                POST /graphql
+        
+        - A grande vantagem do GraphQL é que no corpo da requisição podemos passar várias querys
+
+        - Formato:
+
+            POST /graphql
+
+            {
+                query todosUsuarios{
+                    users()
+                },
+
+                query todosProdutos{
+                    products()
+                }
+            }
+
+            E assim serão retornados todos os usuários e todos os produtos em uma só requisição
+        
+        - Quais "verbos" temos então no GraphQL?
+            
+            * Temos 3 "verbos": Query, Mutation, Subscription
+
+                > Query: Quando queremos receber informaçoes
+
+                > Mutation: Quando queremos alterar os registros, seja criar, deletar ou atualizar
+
+                > Subscription: Quando queremos ouvir uma informação em tempo real
+            
+            * Aplicando os verbos em uma única requisição
+
+                {
+                    mutation updateUser{
+                        updateUser(id: 1){
+                             nome: "Diego"
+                        }
+                    }
+
+                    query users{
+                        users()
+                    }
+                }
+
+|-> Vantagens e uso do GraphQL
+
+    -> Devido a grande disponibilidade de serviços atualmente, é muito comum um único servidor alimentar sites,
+       aplicativos e APIs públicas simultaneamente, o que pode causar grandes complicações ao longo do desenvolvimento,
+       seja por refatorações que parecem infinitas de funções de retorno de dados ou criações exponenciais de rotas
+    
+    -> Também temos o grande problema de over fetch de dados, buscar uma coleção de informações em uma busca em que
+       nem tudo que foi solicitado seŕa usado
+    
+    -> Tendo em vista esses problemas, GraphQL pode ser uma solução válida para essas situações, já que atribui
+       ao Frontend um papel mais importante ao explicitar com precisão o que precisa
+
+       Tenha em vista um modelo de dado em que um usuário tem relação chamada "Groups" com determinado artefato do
+       banco de dados, e ao retornarmos em uma API REST que alimenta vários serviços tenha essa estrutura:
+
+        user:{
+            id,
+            firstName,
+            secondName,
+            age,
+            following,
+            followers,
+            groups:{
+                id,
+                title,
+                members
+        }
+
+        ao fazermos o fetch deste modelo por ID para uma página que apenas precisamos de id, firstName e
+        de groups o groups.id e groups.title, temos um over fetch de várias informações que podem custar caro
+
+        Utilizando GraphQL podemos dar ao Frontend o dever de informar que conteúdo realmente será necessário
+        naquele momento, desta forma utilizariamos uma query no seguinte formato:
+
+            {
+                query users{
+                    users{
+                        id,
+                        firstName,
+                        group:{
+                            id,
+                            title
+                        }
+                    }
+                }
+            }
+
+    -> GraphQL cria de forma automatica a documentação do nosso Backend, sem a necessidade de algo como o
+       Swagger para API rest, devido a um elemento chamado Schema, que guarda tais informações
