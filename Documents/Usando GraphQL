@@ -1,0 +1,43 @@
+|-> Instalando dependências
+
+    -> De início poderíamos utilizar o express, mesma biblioteca utilizada para APIs REST, entretanto,
+       precisaremos de mais do que ela poderia oferecer, portanto, utilizaremos a biblioteca "graphql-yoga"
+       uma biblioteca baseada em express, mas que extende suas funcionalidades
+
+|-> Configurando ambiente
+
+    -> De início devemos importar o GraphQLServer e inicialo, passando suas devidas configurações de
+       schema (equivalente de model) e resolvers (equivalente de controller), segue exemplo de implementação:
+
+        /*
+            const { GraphQLServer } = require('graphql-yoga')
+
+            const path = require('path')
+
+            const resolvers = require('./resolvers')
+
+            const server = new GraphQLServer({
+                typeDefs: path.resolve(__dirname,'schema.graphql'),
+                resolvers: resolvers
+            })
+
+            server.start();
+        */
+
+        Ao iniciarmos o programa, o serviço automaticamente irá rodar em locahost:4000
+
+|-> Sobre a interface do GraphQL
+
+    -> Ao entrarmos em locahost:4000, nos deparamos com uma interface, semelhante ao Insomnia para teste de
+       API REST, também temos, na lateral dois botões, DOCS e SCHEMA, ao clicarmos neles, receberemos todas
+       as queries e suas definições na aba de DOCS, e os types definidos em SCHEMA
+
+    -> Para testarmos nossas requisições basta informarmos o verbo da operação(query, mutation ou subscription)
+       o nome do resolver e quais propriedades queremos receber
+
+       EX: A seguinte query retornará apenas o nome de todos os usuários
+        query{
+            users{
+                name
+            }
+        }

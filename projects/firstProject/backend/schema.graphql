@@ -1,0 +1,23 @@
+#o ponto de exclamação indica obrigatoriedade
+type User {
+    id: ID!
+    name: String!
+    email: String!
+}
+
+#Com User! afirmamos que o array deve obrigatoriamente conter apenas usuarios,
+#seguindo o modelo que foi definido acima
+
+#Com [User!]! afirmamos que o retorno deve ser obrigatoriamente um array, mesmo que vazio,
+#mas nunca nulo
+type Query {
+    users: [User!]!
+
+    #Recebo exclusivamente um ID e retorno um usuario, não é correto utilizar User!, pois
+    #desejamos receber o nulo, caso o ID esteja errado
+    user(id: ID!): User
+}
+
+type Mutation {
+    createUser(name: String!, email: String!): User
+}
